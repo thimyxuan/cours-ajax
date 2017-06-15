@@ -50,3 +50,42 @@ $(function(){
 });
 
 
+var name = $( "ul.nav" ).first().attr( "id" );
+var request = $.ajax({
+  url: "http://jsonplaceholder.typicode.com/users",
+  method: "GET",
+  dataType: "json" // cette ligne est optionnelle
+});
+
+/*
+request.done(function( msg ) {
+	let list=$('#listname');
+
+	for(let i=0; i<msg.length; i++){
+  	console.log(msg[i].name);
+  	list.append('<li><a href="">'+msg[i].name+'</a></li>');
+  	}
+});
+ 
+request.fail(function( jqXHR, textStatus ) {
+  alert( "Request failed: " + textStatus );
+});
+*/
+
+
+//----------- Correction du prof ----------------- 
+
+request.done(function( data ) {
+	var content ="";
+	data.forEach(function(element){
+		content += '<li><a href="">'+element.name+'</a></li>';
+	});
+
+	console.log(data);
+	$("#listname").html(content);
+
+});
+
+request.fail(function( jqXHR, textStatus ) {
+  alert( "Request failed: " + textStatus );
+});
