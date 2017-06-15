@@ -49,6 +49,7 @@ $(function(){
 
 });
 
+// -- Exercice : Afficher les noms des gens de la bdd dans la partie CATEGORIES dans la colonne droite
 
 var name = $( "ul.nav" ).first().attr( "id" );
 var request = $.ajax({
@@ -75,17 +76,41 @@ request.fail(function( jqXHR, textStatus ) {
 
 //----------- Correction du prof ----------------- 
 
+
 request.done(function( data ) {
 	var content ="";
+
 	data.forEach(function(element){
-		content += '<li><a href="">'+element.name+'</a></li>';
+		content += '<li id="user-'+element.id+'"><a href="">'+element.name+'</a></li>';
 	});
 
 	console.log(data);
-	$("#listname").html(content);
 
+	$("#right_column ul").html(content);
+
+	$("#right_column ul > li").click(function(e){
+		e.preventDefault();
+		var idUser= $(this).attr("id");
+		console.log(idUser.split("-"));
+		idUser = idUser.split("-");
+
+		var ficheUser= $.ajax({
+			url: "http://jsonplaceholder.typicode.com/users",
+			method: "GET",
+			data: { id : idUser[1] },
+  			dataType: "json" 
+		});
+
+		ficheUser.done(function(dataUser){
+			console.info(dataUser[0].username+" "+dataUser[0].email);
+		});
+	});
 });
 
 request.fail(function( jqXHR, textStatus ) {
   alert( "Request failed: " + textStatus );
 });
+
+
+// -- Exercice : Afficher dans la console l'e-mail et le pseudo de la personne quand on clique sur son nom
+
