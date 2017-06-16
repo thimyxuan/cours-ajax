@@ -1,4 +1,7 @@
-// -- Exercice : faire un slider avec des images qui changent toutes les 3 secondes
+
+//----------------------------------------------------------------------
+// EXERCICE 1 : faire un slider avec des images qui changent toutes les 3 secondes
+//----------------------------------------------------------------------
 
 /*
 $(function(){
@@ -29,7 +32,8 @@ $(function(){
 //setInterval VS setTimer
 //setInterval prend 2 arguments : la fonction, et le temps
 
-// Correction du prof :
+
+//----------- Correction du prof -----------------
 
 $(function(){
 
@@ -49,8 +53,13 @@ $(function(){
 
 });
 
-// -- Exercice : Afficher les noms des gens de la bdd dans la partie CATEGORIES dans la colonne droite
 
+
+//----------------------------------------------------------------------
+// EXERCICE 2 : Afficher les noms des gens de la bdd dans la partie CATEGORIES dans la colonne droite
+//----------------------------------------------------------------------
+
+/*
 var name = $( "ul.nav" ).first().attr( "id" );
 var request = $.ajax({
   url: "http://jsonplaceholder.typicode.com/users",
@@ -58,7 +67,6 @@ var request = $.ajax({
   dataType: "json" // cette ligne est optionnelle
 });
 
-/*
 request.done(function( msg ) {
 	let list=$('#listname');
 
@@ -73,8 +81,19 @@ request.fail(function( jqXHR, textStatus ) {
 });
 */
 
+//----------------------------------------------------------------------
+// EXERCICE 3 : Afficher dans la console l'e-mail et le pseudo de la personne quand on clique sur son nom
+//----------------------------------------------------------------------
 
-//----------- Correction du prof ----------------- 
+//----------- Correction du prof -----------------
+
+
+var name = $( "ul.nav" ).first().attr( "id" );
+var request = $.ajax({
+  url: "http://jsonplaceholder.typicode.com/users",
+  method: "GET",
+  dataType: "json" // cette ligne est optionnelle
+});
 
 
 request.done(function( data ) {
@@ -112,5 +131,80 @@ request.fail(function( jqXHR, textStatus ) {
 });
 
 
-// -- Exercice : Afficher dans la console l'e-mail et le pseudo de la personne quand on clique sur son nom
+
+//----------------------------------------------------------------------
+// EXERCICE 4 : Aller récupérer les infos des 4 premiers posts : titre et contenu et l'afficher sous la banière image. Le texte doit faire 100 caractères et la suite sera tronquée avec trois petits-points ... Réduire le titre à 15 caractères
+//----------------------------------------------------------------------
+
+/*
+var requete = $.ajax({
+  url: "http://jsonplaceholder.typicode.com/posts",
+  method: "GET",
+  dataType: "json" // cette ligne est optionnelle
+});
+
+
+requete.done(function( dataPosts ) {
+	var content="";
+
+	for(let i=0; i<4; i++){
+	console.log(dataPosts[i].title+dataPosts[i].body);
+	content = '<strong>'+dataPosts[i].title.slice(0,15)+'</strong><p>'+dataPosts[i].body.slice(0,100)+'...</p>';
+
+	$(".test").eq(i).html(content);
+
+	}
+
+});
+
+req.fail(function( jqXHR, textStatus ) {
+  alert( "Request failed: " + textStatus );
+});
+
+*/
+
+//----------- Correction du prof -----------------
+
+ $.ajax({
+  url: "https://jsonplaceholder.typicode.com/posts",
+  method: "GET",
+  dataType: "json" // cette ligne est optionnelle
+})
+
+.done(function( dataPosts ) {
+
+	//console.log(dataPosts);
+
+	for(let i=0; i<4; i++)
+	{
+		//console.log($('.one_quarter > strong'));
+		$('.one_quarter > div > strong').eq(i).text(dataPosts[i].title.slice(0,15));
+		$('.resume').eq(i).text(dataPosts[i].body.slice(0,100));
+
+		$('.one_quarter a').eq(i).click(function(e){
+			e.preventDefault();
+			
+			if($(this).text() != '« Read Less' )
+			{
+				$('.resume').eq(i).text(dataPosts[i].body);
+				$(this).text('« Read Less');
+			}
+			else
+			{
+				$('.resume').eq(i).text(dataPosts[i].body.slice(0,100)+'...');
+				$(this).text('Read More »');
+			}
+
+		});
+	}
+})
+
+// Note : text() permet de récupérer le texte brut alors que html() prend en compte les balises html
+
+.fail(function( jqXHR, textStatus ) {
+  alert( "Request failed: " + textStatus );
+});
+
+
+
 
