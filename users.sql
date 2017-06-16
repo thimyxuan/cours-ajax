@@ -1,0 +1,13 @@
+CREATE DATABASE IF NOT EXISTS baseajax;
+
+USE baseajax;
+
+CREATE TABLE users (
+  id_user INT(3) NOT NULL AUTO_INCREMENT, 
+  nom VARCHAR(20) NOT NULL, 
+  prenom VARCHAR(20) NOT NULL, 
+  poste ENUM('CTO', 'CEO', 'SIO'),
+  date_naissance DATE NOT NULL,
+  date_create DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id_user)
+) ENGINE=InnoDB ;
