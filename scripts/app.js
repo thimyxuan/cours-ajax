@@ -165,7 +165,7 @@ req.fail(function( jqXHR, textStatus ) {
 
 //----------- Correction du prof -----------------
 
- $.ajax({
+$.ajax({
   url: "https://jsonplaceholder.typicode.com/posts",
   method: "GET",
   dataType: "json" // cette ligne est optionnelle
@@ -206,5 +206,101 @@ req.fail(function( jqXHR, textStatus ) {
 });
 
 
+//----------------------------------------------------------------------
+// EXERCICE 5 : afficher les 3 premieres photos de la bdd + afficher 10 photos suivantes lorsque l'on clique sur View more
+//----------------------------------------------------------------------
+
+/*
+var requet = $.ajax({
+  url: "http://jsonplaceholder.typicode.com/photos",
+  method: "GET",
+  dataType: "json" // cette ligne est optionnelle
+});
 
 
+requet.done(function( dataPhotos ) {
+	var content="";
+
+	for(let i=0; i<3; i++)
+	{
+		let images=[dataPhotos[i].url];
+		console.log(images);
+		$('.one_third img').eq(i).attr('src',images);
+	}
+
+	//dataPhotos.forEach(function(photo)
+	for(let i=3; i<5; i++)
+	{
+		let images=[dataPhotos[i].url];
+		$('.clear').append('<li class="one_third"><img src="'+images+'" width="290" height="180" alt=""></li>');*/
+		/*
+		$('.plus a').eq(i).click(function(e){
+			e.preventDefault();
+			$('.lastbox').append('<img src="'+images+'" width="290" height="180" alt="">');
+			
+		});*/
+/*
+	}
+
+	for(let i=5; i<6; i++)
+	{
+		let images=[dataPhotos[i].url];
+		$('.clear').append('<li class="one_third lastbox"><img src="'+images+'" width="290" height="180" alt=""></li>');
+	}
+
+});
+
+requet.fail(function( jqXHR, textStatus ) {
+  alert( "Request failed: " + textStatus );
+});*/
+
+
+
+//----------- Correction du prof -----------------
+
+let increment = 0;
+let picture;
+
+$.get("http://jsonplaceholder.typicode.com/photos")
+
+.done(function(data){
+
+	//console.log(data);
+
+	for(let i=0; i<3;i++)
+	{
+		$('.one_third').eq(i).children().attr('src',data[i].url);
+		picture = data;
+	}
+
+	});
+
+	$('figcaption > a').click(function(e){
+		e.preventDefault();
+		console.log('kk'); // ceci est pour vérifier que mon événement fonctionne bien, si c'est le cas la console affiche 'kk'
+
+		var content="";
+		var indexLi= $('.one_third').length;
+		//console.log(indexLi);
+
+		for(let i=increment; i<increment+10; i++)
+			{
+				//console.log(i);
+				var classHtml = "";
+				if((indexLi+1)%3 == 0)
+				{					
+					classHtml = 'lastbox';
+				}
+				content += '<li class="one_third'+classHtml+'"><img src="'+picture[i].url+'" width="290" height="180" alt=""></li>';
+				indexLi++;
+			}
+
+		$('#affichephoto').append(content);
+
+		increment += 10;
+
+	})
+
+.fail(function( jqXHR, textStatus ) {
+  alert( "Request failed: " + textStatus );
+});
