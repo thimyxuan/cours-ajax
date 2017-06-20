@@ -90,7 +90,7 @@ request.fail(function( jqXHR, textStatus ) {
 
 var name = $( "ul.nav" ).first().attr( "id" );
 var request = $.ajax({
-  url: "http://jsonplaceholder.typicode.com/users",
+  url: "http://localhost/cours-ajax/api.php",
   method: "GET",
   dataType: "json" // cette ligne est optionnelle
 });
@@ -100,7 +100,7 @@ request.done(function( data ) {
 	var content ="";
 
 	data.forEach(function(element){
-		content += '<li id="user-'+element.id+'"><a href="">'+element.name+'</a></li>';
+		content += '<li id="user-'+element.id_user+'"><a href="">'+element.prenom+' '+element.nom+'</a></li>';
 	});
 
 	console.log(data);
@@ -110,18 +110,18 @@ request.done(function( data ) {
 	$("#right_column ul > li").click(function(e){
 		e.preventDefault();
 		var idUser= $(this).attr("id");
-		console.log(idUser.split("-"));
+		//console.log(idUser.split("-"));
 		idUser = idUser.split("-");
 
 		var ficheUser= $.ajax({
-			url: "http://jsonplaceholder.typicode.com/users",
+			url: "http://localhost/cours-ajax/api.php",
 			method: "GET",
-			data: { id : idUser[1] },
-  			dataType: "json" 
+			data: { id_user : idUser[1] },
+  			dataType: "json"
 		});
 
 		ficheUser.done(function(dataUser){
-			console.info(dataUser[0].username+" "+dataUser[0].email);
+			console.info(dataUser[0].prenom+" "+dataUser[0].nom);
 		});
 	});
 });
@@ -299,8 +299,31 @@ $.get("http://jsonplaceholder.typicode.com/photos")
 
 		increment += 10;
 
-	})
+	});
 
-.fail(function( jqXHR, textStatus ) {
-  alert( "Request failed: " + textStatus );
+
+//----------------------------------------------------------------------
+// EXERCICE 6 : afficher les données du formulaire sur la page api.php et afficher un message de validation lorsqu'elles sont bien enregistrées dans la bdd
+//----------------------------------------------------------------------
+
+$('form').submit(function(e)
+{
+	e.preventDefault(); // cette ligne est utile pour ne pas réactualiser la page ni être renvoyé vers une autre page
+
+	$.ajax({
+ 	url: "http://localhost/cours-ajax/api.php",
+ 	method: "POST", // car mon formulaire est en méthode POST
+ 	data : $('form').serialize() // la fonction serialize permet de récupérer toutes les valeurs des INPUT d'un formulaire et les mettre sous format d'envoi càd sous chaînes de caractères
+ 	})
+
+ 	.done(function( dataForm ) {
+ 		console.log("User registered");
+ 		$('#messageajax').html("<div class='alert alert-success'><strong>Success! </strong>User registered</div>");
+ 	})
+
+ 	.fail(function( jqXHR, textStatus ) { 
+ 		console.log("User not registered");	 
+ 		 $('#messageajax').html("<div class='alert alert-danger'><strong>Error! </strong>User not registered</div>");
+ 	});
+
 });

@@ -152,7 +152,7 @@ input, textarea, select{font-size:12px; font-family:Georgia,"Times New Roman",Ti
 #footer{padding:20px 0;}
 #footer p{margin:0; padding:0;}
 
-/*--------------------------- Form -------------------------------*/
+/*--------------------------- Formulaire -------------------------------*/
 *{
 	box-sizing:border-box;
 }
@@ -182,8 +182,25 @@ input[type="submit"]{
 	height:30px;
 	font: 16px sans-serif;
 	padding:5px;
-	width:100px;
+	width:100%;
 }
 [placeholder]{
 	font: 16px sans-serif;
+}
+/*--------------------------- Alertes -------------------------------*/
+.erreur{
+	background: #fff;
+	border:solid 1px red;
+	padding:5px;
+	margin:5px 0;
+	color:red;
+}
+.validation{
+	background: #76ff03;
+	padding:5px;
+	margin:5px;
+	color:black;
+	border:solid 1px #64dd17;
+	text-align: center;
+	font-size:16px;
 }
