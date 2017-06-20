@@ -92,6 +92,9 @@
       <div id="messageajax"></div>
       <h2 class="title">Formulaire de contact</h2>
       <form action="api.php" method="post" id="form">
+
+      <input id="id_user" name="id_user" type="hidden" placeholder="" class="form-control input-md" required="">
+
         <label for="nom">Nom</label>
           <input type="text" name="nom" id="nom">
         <label for="prenom">Prénom</label>
@@ -99,13 +102,13 @@
         <label for="date_naissance">Date de naissance</label>
           <input type="date" name="date_naissance" id="date_naissance">
         <label for="poste">Votre fonction</label>
-          <select name="poste">
+          <select name="poste" id="poste">
                 <option value="cto">CTO</option>
                 <option value="ceo">CEO</option>
                 <option value="sio">SIO</option>
           </select>
-        <input type="submit" value="Envoyer">
-        <input type="submit" value="Reset">
+        <button type="submit" class="btn btn-success">Envoyer</button>
+        <button id="deleteUser" name="" class="btn btn-danger">Supprimer</button>
       </form>
       
       </section>

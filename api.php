@@ -23,16 +23,22 @@ if($_SERVER['REQUEST_METHOD']=='POST') // on vérifie quelle méthode a été ut
 {
 	if(!empty($_POST))
 	{
-
-	$stmt = $dbh->prepare("INSERT INTO users(nom, prenom, poste, date_naissance, date_create)VALUES(:nom, :prenom, :poste, :date_naissance, now() )");
-	$stmt->bindParam(':nom', $_POST['nom'], PDO::PARAM_STR);
-	$stmt->bindParam(':prenom', $_POST['prenom'], PDO::PARAM_STR);
-	$stmt->bindParam(':poste', $_POST['poste'], PDO::PARAM_STR);
-	$stmt->bindParam(':date_naissance', $_POST['date_naissance'], PDO::PARAM_STR);
-	$stmt->execute();
+		if(isset($_POST['id_user'])) // si on envoie un id_user alors on fait la requête de supression
+		{
+			$stmt = $dbh->prepare("DELETE FROM users WHERE id_user= :id_user");
+			$stmt->bindParam(':id_user',$_POST['id_user']);		
+		}
+		else // sinon on insère un nouvel USER
+		{
+			$stmt = $dbh->prepare("INSERT INTO users(nom, prenom, poste, date_naissance, date_create)VALUES(:nom, :prenom, :poste, :date_naissance, now() )");
+			$stmt->bindParam(':nom', $_POST['nom'], PDO::PARAM_STR);
+			$stmt->bindParam(':prenom', $_POST['prenom'], PDO::PARAM_STR);
+			$stmt->bindParam(':poste', $_POST['poste'], PDO::PARAM_STR);
+			$stmt->bindParam(':date_naissance', $_POST['date_naissance'], PDO::PARAM_STR);
+		}
+		$stmt->execute();
 	}
 }
-
 
 elseif($_SERVER['REQUEST_METHOD'] =='GET')
 {

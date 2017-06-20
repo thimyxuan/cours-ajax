@@ -40,7 +40,7 @@ $(function(){
 	let images=["images/00.jpg", "images/01.jpg","images/02.jpg", "images/03.jpg"];
 	let index=0;
 
-	setInterval(function()
+	setInterval(function() // setInterval permet de répéter un code toutes les X secondes
 	{
 		if(index == images.length) // si l'index est égal à la taille du tableau càd si on est arrivé à la dernière ligne on remet l'index à zéro
 			index = 0; // ici pas besoin d'accolade comme en php
@@ -116,12 +116,29 @@ request.done(function( data ) {
 		var ficheUser= $.ajax({
 			url: "http://localhost/cours-ajax/api.php",
 			method: "GET",
-			data: { id_user : idUser[1] },
+			data: { id_user : idUser[1] }, // on obtient un tableau avec les données user et #id, le user se trouve à l'index 0 alors que le #id se trouve à l'index 1 du tableau
   			dataType: "json"
 		});
 
 		ficheUser.done(function(dataUser){
+			//console.log(dataUser);
 			console.info(dataUser[0].prenom+" "+dataUser[0].nom);
+			$('#id_user').attr('value',dataUser[0].id_user);
+			$('#nom').attr('value',dataUser[0].nom);
+			$('#prenom').attr('value',dataUser[0].prenom);
+			$('#date_naissance').attr('value',dataUser[0].date_naissance);
+			//console.log(dataUser[0].poste);
+			//console.log($('#poste').val());
+			
+			//$("#poste option[value="+dataUser[0].poste+"]").prop("selected",true);
+			
+			// 2e méthode :
+			let select = [];
+			select["CTO"]=0;
+			select["CEO"]=1;
+			select["SIO"]=2;
+			$("#poste option:eq("+select[dataUser[0].poste]+")").attr("selected","selected");
+
 		});
 	});
 });
@@ -326,4 +343,23 @@ $('form').submit(function(e)
  		 $('#messageajax').html("<div class='alert alert-danger'><strong>Error! </strong>User not registered</div>");
  	});
 
+ 	$("#deleteUser").click(function(e){
+ 		e.preventDefault();
+
+ 		$.ajax({
+	 	url: "http://localhost/cours-ajax/api.php",
+	 	method: "POST", // car mon formulaire est en méthode POST
+	 	data : {id_user : $("#id_user").val()} // la fonction serialize permet de récupérer toutes les valeurs des INPUT d'un formulaire et les mettre sous format d'envoi càd sous chaînes de caractères
+	 	})
+
+	 	.done(function( dataForm ) {
+	 		console.log("User deleted");
+	 		$('#messageajax').html("<div class='alert alert-success'><strong>Success! </strong>User deleted</div>");
+	 	})
+
+	 	.fail(function( jqXHR, textStatus ) { 
+	 		console.log("User not deleted");	 
+	 		 $('#messageajax').html("<div class='alert alert-danger'><strong>Error! </strong>User not deleted</div>");
+ 		});
+ 	});
 });
